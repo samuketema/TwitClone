@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-class SignInPage extends StatefulWidget {
-  const SignInPage({super.key});
+class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignInPageState extends State<SignInPage> {
-  GlobalKey<FormState> _signInKey = GlobalKey();
+class _SignupPageState extends State<SignupPage> {
+ GlobalKey<FormState> _signInKey = GlobalKey();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final RegExp emailValid = RegExp(
@@ -27,7 +26,9 @@ class _SignInPageState extends State<SignInPage> {
               color: Colors.blue,
               size: 70,
             ),
-            SizedBox(height: 20,),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               'SinIn to Twitter',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
@@ -87,19 +88,24 @@ class _SignInPageState extends State<SignInPage> {
               ),
               width: 300,
               child: TextButton(
-                  onPressed: () {
-                    if (_signInKey.currentState!.validate()) {
-                      debugPrint('Email: ${_emailController.text}');
-                      debugPrint('Password: ${_passwordController.text}');
-                    }
-                  },
-                  child: Text(
-                    'SignIn',
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  )),
+                onPressed: () {
+                  if (_signInKey.currentState!.validate()) {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => SignupPage()));
+                  }
+                },
+                child: Text(
+                  'SignUp',
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            TextButton(
+              onPressed: () {Navigator.of(context).pop();},
+              child: Text("Do you have an account? SignIn here."),
             )
           ],
         ),
