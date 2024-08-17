@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignInPageState extends State<SignInPage> {
   GlobalKey<FormState> _signInKey = GlobalKey();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -23,15 +23,29 @@ class _SignupPageState extends State<SignupPage> {
       body: Form(
         key: _signInKey,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextFormField(
-              controller: _emailController,
-              validator: (value) {
-                if (!emailValid.hasMatch(value as String)) {
-                  return 'Please Enter a valid Email';
-                }
-                return null;
-              },
+            Container(
+              margin: EdgeInsets.fromLTRB(20, 10, 20,10),
+
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Enter Your Email',
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10,vertical: 25)
+                ),
+                controller: _emailController,
+                validator: (value) {
+                  if (!emailValid.hasMatch(value as String)) {
+                    return 'Please Enter a valid Email';
+                  }
+                  return null;
+                },
+              ),
             ),
             TextFormField(
               controller: _passwordController,
