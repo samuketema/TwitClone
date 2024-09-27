@@ -1,13 +1,20 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-class SignupPage extends StatefulWidget {
+import 'package:twitter/Models/user.dart';
+import 'package:twitter/providers/user_provider.dart';
+class SignupPage extends ConsumerStatefulWidget{
   const SignupPage({super.key});
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  ConsumerState<SignupPage> createState() => _SignupPageState();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _SignupPageState extends ConsumerState<SignupPage> {
+  FirebaseAuth _auth = FirebaseAuth.instance;
+ 
  GlobalKey<FormState> _signInKey = GlobalKey();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -88,10 +95,18 @@ class _SignupPageState extends State<SignupPage> {
               ),
               width: 300,
               child: TextButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_signInKey.currentState!.validate()) {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => SignupPage()));
+                    try {
+                      await _auth.createUserWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+                      await ref.read(userProvider.notifier).signup(_emailController.text);
+                      if (!mounted) {
+                        return;
+                      }
+                      Navigator.of(context).pop();
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+                    }
                   }
                 },
                 child: Text(
