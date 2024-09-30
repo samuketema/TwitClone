@@ -1,7 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:twitter/Models/user.dart';
 
 final userProvider = StateNotifierProvider<userNotifier, LocalUser>((ref) {
@@ -31,6 +32,7 @@ class userNotifier extends StateNotifier<LocalUser> {
             user: FirebaseUser(
                 email: 'error', name: 'No Name', proofilePic: 'error')));
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Future<void> login(String email) async {
     QuerySnapshot response = await _fireStore
@@ -58,7 +60,7 @@ class userNotifier extends StateNotifier<LocalUser> {
                   email: email,
                   name: 'No Name',
                   proofilePic:
-                      'https://i.sstatic.net/34AD2.jpg')
+                      'https://media.licdn.com/dms/image/v2/D4E35AQGa0PwW6lliRg/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1719446288616?e=1728165600&v=beta&t=Y0GVYd_x8iv9kpqyg-mle2uPsTE5dT6-ejCIDl29OGQ')
               .toMap(),
         );
     DocumentSnapshot snapshot = await response.get();
@@ -67,11 +69,17 @@ class userNotifier extends StateNotifier<LocalUser> {
         user: FirebaseUser.fromMap(snapshot.data() as Map<String, dynamic>));
   }
 
-  Future<void> update(String name) async {
+  Future<void> updateName(String name) async {
     await _fireStore.collection('users').doc(state.id).update({'name':name});
     state = state.copyWith(user: state.user.copyWith(name: name)); 
   }
-  
+  Future<void> updateImage(File image) async{
+  Reference ref= _storage.ref().child('users').child(state.id);
+    TaskSnapshot snapshot = await ref.putFile(image);
+    String profilepicUrl = await snapshot.ref.getDownloadURL();
+    await _fireStore.collection('users').doc(state.id).update({'proofilePic':profilepicUrl});
+    state = state.copyWith(user:state.user.copyWith(proofilePic: profilepicUrl));
+  }
 
   void logout() {
     state = LocalUser(
