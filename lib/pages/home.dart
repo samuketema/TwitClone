@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:twitter/Models/tweet.dart';
 import 'package:twitter/pages/post_tweet.dart';
 import 'package:twitter/pages/settings.dart';
@@ -26,8 +27,10 @@ class HomePage extends ConsumerWidget {
         ),
       ),
       appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.blue,
+        bottom: PreferredSize(preferredSize: Size.fromHeight(4.0) , child: Container(
+          color: Colors.black,
+          height: 1,
+        )),
         leading: Builder(builder: (context) {
           return GestureDetector(
             onTap: () => Scaffold.of(context).openDrawer(),
@@ -39,11 +42,14 @@ class HomePage extends ConsumerWidget {
             ),
           );
         }),
-        title: Text('Home Page'),
+        title: Icon(FontAwesomeIcons.twitter ,color: Colors.blue,size: 30,),
       ),
       body: ref.watch(feedProvider).when(
           data: (List<Tweet> tweets) {
-            return ListView.builder(
+            return ListView.separated(
+              separatorBuilder: (context , index) => Divider(
+                color: Colors.black,
+              ),
                 itemCount: tweets.length, 
                 itemBuilder: (context, count) {
                   return ListTile(

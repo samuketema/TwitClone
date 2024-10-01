@@ -12,9 +12,7 @@ class PostTweetPage extends ConsumerWidget {
     FirebaseFirestore _storage = FirebaseFirestore.instance;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Post a Tweet'),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
+        title: Text('Post a Tweet',style: TextStyle(color: Colors.black),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

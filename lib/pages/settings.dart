@@ -20,9 +20,7 @@ class _SettingState extends ConsumerState<Setting> {
     _nameController.text = currentUser.user.name;
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: Text('Settings'),
-        backgroundColor: Colors.blue,
+        title: Text('Settings' ,style: TextStyle(color: Colors.black),),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
