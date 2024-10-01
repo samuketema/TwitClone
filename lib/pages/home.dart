@@ -1,9 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:twitter/Models/tweet.dart';
 import 'package:twitter/pages/post_tweet.dart';
 import 'package:twitter/pages/settings.dart';
+import 'package:twitter/providers/tweets_provider.dart';
 import 'package:twitter/providers/user_provider.dart';
 
 class HomePage extends ConsumerWidget {
@@ -40,10 +41,25 @@ class HomePage extends ConsumerWidget {
         }),
         title: Text('Home Page'),
       ),
-      body: Column(children: [
-        Text(currentUser.user.name),
-        Text(currentUser.user.email),
-      ]),
+      body: ref.watch(feedProvider).when(
+          data: (List<Tweet> tweets) {
+            return ListView.builder(
+                itemCount: tweets.length, 
+                itemBuilder: (context, count) {
+                  return ListTile(
+                    leading: CircleAvatar(foregroundImage: NetworkImage(tweets[count].profilePic),),
+                    title: Text(tweets[count].name,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text(tweets[count].tweet),
+                  );
+                });
+          },
+          error: (error, stackTrace) => Center(
+                child: Text('Error'),
+              ),
+          loading: () {
+            return CircularProgressIndicator();
+          }),
       drawer: Drawer(
         child: Column(
           children: [
