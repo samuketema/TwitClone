@@ -60,7 +60,7 @@ class userNotifier extends StateNotifier<LocalUser> {
                   email: email,
                   name: 'No Name',
                   proofilePic:
-                      'https://media.licdn.com/dms/image/v2/D4E35AQGa0PwW6lliRg/profile-framedphoto-shrink_400_400/profile-framedphoto-shrink_400_400/0/1719446288616?e=1728165600&v=beta&t=Y0GVYd_x8iv9kpqyg-mle2uPsTE5dT6-ejCIDl29OGQ')
+                      'http://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_brown.png')
               .toMap(),
         );
     DocumentSnapshot snapshot = await response.get();
@@ -85,6 +85,6 @@ class userNotifier extends StateNotifier<LocalUser> {
     state = LocalUser(
         id: 'error',
         user: FirebaseUser(
-            email: 'error', name: 'error', proofilePic: 'error'));
+            email: 'error', name: 'error', proofilePic: 'http://commondatastorage.googleapis.com/codeskulptor-assets/lathrop/nebula_brown.png'));
   }
 }
