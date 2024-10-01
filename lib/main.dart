@@ -19,6 +19,14 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context ,WidgetRef ref) {
     return MaterialApp(
+      theme: ThemeData(
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          centerTitle: true,
+          titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)
+        )
+      ),
       title: 'Twitter App',
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
